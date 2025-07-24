@@ -9,7 +9,11 @@ buildscript {
     ext.kotlin_version = '1.7.21'
 
     repositories {
+        google()
         mavenCentral()
+        flatDir {
+            dirs 'libs'  // 指定本地 jar 目录
+        }
     }
 
     dependencies {
@@ -25,10 +29,16 @@ android {
         minSdkVersion getExt('minSdkVersion', 21)
         targetSdkVersion getExt('targetSdkVersion', 33)
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
 }
 
 dependencies {
     compileOnly 'com.facebook.react:react-native:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.amap.api:3dmap:9.6.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])  // 引用 libs 文件夹下所有 jar
 }
