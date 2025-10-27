@@ -40,5 +40,5 @@ android {
 dependencies {
     compileOnly 'com.facebook.react:react-native:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])  // 引用 libs 文件夹下所有 jar
+    implementation fileTree(dir: 'libs', include: ['**/*.jar'])  // 引用 libs 文件夹下所有 jar（包含子目录）
 }
