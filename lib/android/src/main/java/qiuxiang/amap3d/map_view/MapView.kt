@@ -17,19 +17,9 @@ import qiuxiang.amap3d.getFloat
 import qiuxiang.amap3d.toJson
 import qiuxiang.amap3d.toLatLng
 import qiuxiang.amap3d.toPoint
-import com.amap.api.location.AMapLocation
-import com.amap.api.location.AMapLocationClient
-import com.amap.api.location.AMapLocationClientOption
-import com.amap.api.location.AMapLocationListener
-import com.amap.api.maps.LocationSource
-import com.amap.api.maps.model.BitmapDescriptorFactory
-import qiuxiang.amap3d.R
-import android.graphics.Color
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
 
 @SuppressLint("ViewConstructor")
-class MapView(context: ThemedReactContext) : TextureMapView(context), LocationSource, AMapLocationListener {
+class MapView(context: ThemedReactContext) : TextureMapView(context) {
   @Suppress("Deprecation")
   private val eventEmitter =
     context.getJSModule(com.facebook.react.uimanager.events.RCTEventEmitter::class.java)
@@ -37,45 +27,13 @@ class MapView(context: ThemedReactContext) : TextureMapView(context), LocationSo
   private val polylineMap = HashMap<String, Polyline>()
   private var initialCameraPosition: ReadableMap? = null
   private var locationStyle: MyLocationStyle
-  private var locationChangedListener: LocationSource.OnLocationChangedListener? = null
-  private var locationClient: AMapLocationClient? = null
 
   init {
     super.onCreate(null)
 
     locationStyle = MyLocationStyle()
-
-    // 1. 从资源文件中解码出原始的 Bitmap
-    val originalBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.blue_dot)
-
-    // 2. 定义你想要的图标宽度和高度 (单位: 像素 px)
-    val widthInDp = 40f
-    val heightInDp = 40f
-
-    // 获取屏幕像素密度
-    val density = context.resources.displayMetrics.density
-
-    // 将 dp 值转换为 px 值
-    val newWidth = (widthInDp * density).toInt()
-    val newHeight = (heightInDp * density).toInt()
-
-    // 3. 创建一个按指定尺寸缩放后的新 Bitmap
-    val scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true)
-
-    // 4. 使用缩放后的 Bitmap 创建 BitmapDescriptor
-    val resizedIcon = BitmapDescriptorFactory.fromBitmap(scaledBitmap)
-
-    // 5. 将调整好尺寸的图标设置给 locationStyle
-    locationStyle.myLocationIcon(resizedIcon)
-
-    // locationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.blue_dot))
-    locationStyle.strokeColor(Color.TRANSPARENT)
-    locationStyle.radiusFillColor(Color.TRANSPARENT)
     locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER)
     map.myLocationStyle = locationStyle
-
-    map.setLocationSource(this)
-    map.isMyLocationEnabled = true
 
     map.setOnMapLoadedListener { emit(id, "onLoad") }
     map.setOnMapClickListener { latLng -> emit(id, "onPress", latLng.toJson()) }
@@ -213,33 +171,4 @@ class MapView(context: ThemedReactContext) : TextureMapView(context), LocationSo
       }
     })
   }
-
-  override fun activate(listener: LocationSource.OnLocationChangedListener) {
-    locationChangedListener = listener
-    locationClient = AMapLocationClient(context).apply {
-      setLocationListener(this@MapView)
-      setLocationOption(AMapLocationClientOption().apply {
-        locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
-        isOnceLocation = false
-        isNeedAddress = false
-        interval = 2000  // 可选，持续定位间隔
-      })
-      startLocation()
-    }
-  }
-
-  override fun deactivate() {
-    locationClient?.stopLocation()
-    locationClient?.onDestroy()
-    locationClient = null
-  }
-
-  override fun onLocationChanged(location: AMapLocation?) {
-    if (location != null && location.errorCode == 0) {
-      locationChangedListener?.onLocationChanged(location) // 蓝点更新
-    }
-  }
-
 }
-
-
