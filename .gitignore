@@ -5,7 +5,7 @@ build/
 xcuserdata/
 Pods/
 lib/js/
-/android/
+# /android/
 /ios/
 
 *.iml
