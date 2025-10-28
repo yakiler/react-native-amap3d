@@ -1,6 +1,6 @@
 {
   "name": "react-native-amap3d",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "react-native 高德地图组件，支持 Android + iOS",
   "author": "7c00 <i@7c00.cc>",
   "license": "MIT",
@@ -15,6 +15,7 @@
     "lib/src",
     "lib/android/src",
     "lib/android/build.gradle",
+    "lib/android/libs",
     "lib/ios",
     "react-native.config.js",
     "react-native-amap3d.podspec"
