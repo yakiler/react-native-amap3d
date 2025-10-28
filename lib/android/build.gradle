@@ -11,9 +11,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        flatDir {
-            dirs 'libs'  // 指定本地 jar 目录
-        }
     }
 
     dependencies {
@@ -25,20 +22,21 @@ android {
     compileSdkVersion getExt('compileSdkVersion', 33)
     buildToolsVersion getExt('buildToolsVersion', '33.0.0')
 
-    defaultConfig {
-        minSdkVersion getExt('minSdkVersion', 21)
-        targetSdkVersion getExt('targetSdkVersion', 33)
-    }
-
     sourceSets {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
+            libs.srcDirs = ['libs']
         }
+    }
+
+    defaultConfig {
+        minSdkVersion getExt('minSdkVersion', 21)
+        targetSdkVersion getExt('targetSdkVersion', 33)
     }
 }
 
 dependencies {
     compileOnly 'com.facebook.react:react-native:+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation fileTree(dir: 'libs', include: ['**/*.jar'])  // 引用 libs 文件夹下所有 jar（包含子目录）
+    implementation files('libs/AMap3DMap_10.1.600_AMapNavi_10.1.600_AMapSearch_9.7.4_AMapLocation_6.5.1_20251020.jar')
 }
