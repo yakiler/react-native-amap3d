@@ -33,6 +33,8 @@ class MapView(context: ThemedReactContext) : TextureMapView(context) {
 
     locationStyle = MyLocationStyle()
     locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER)
+    locationStyle.strokeColor(0) // 设置精度圆边框为透明
+    locationStyle.radiusFillColor(0) // 设置精度圆填充为透明
     map.myLocationStyle = locationStyle
 
     map.setOnMapLoadedListener { emit(id, "onLoad") }
