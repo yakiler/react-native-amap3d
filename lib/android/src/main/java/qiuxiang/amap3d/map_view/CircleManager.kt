@@ -46,4 +46,39 @@ internal class CircleManager : SimpleViewManager<Circle>() {
   fun setIndex(circle: Circle, zIndex: Float) {
     circle.zIndex = zIndex
   }
+
+  // ====== 新增文字样式属性 ======
+  @ReactProp(name = "text")
+  fun setText(circle: Circle, text: String?) {
+    circle.textContent = text
+  }
+
+  @ReactProp(name = "textColor", customType = "Color")
+  fun setTextColor(circle: Circle, color: Int) {
+    circle.textColor = color
+  }
+
+  @ReactProp(name = "textSize")
+  fun setTextSize(circle: Circle, size: Int) {
+    circle.textSize = size
+  }
+
+  @ReactProp(name = "textBgColor", customType = "Color")
+  fun setTextBgColor(circle: Circle, color: Int) {
+    circle.textBgColor = color
+  }
+
+  @ReactProp(name = "textAlign")
+  fun setTextAlign(circle: Circle, map: ReadableMap?) {
+    val alignX = map?.getInt("x") ?: 1
+    val alignY = map?.getInt("y") ?: 1
+    circle.textAlignX = alignX
+    circle.textAlignY = alignY
+  }
+
+
+  @ReactProp(name = "offsetPositionOfText")
+  fun setOffsetPositionOfText(circle: Circle, offset: ReadableMap?) {
+    circle.offsetPositionOfText = offset?.toLatLng()
+  }
 }
