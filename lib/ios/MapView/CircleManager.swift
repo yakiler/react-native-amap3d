@@ -7,6 +7,7 @@ class AMapCircleManager: RCTViewManager {
 class Circle: UIView, Overlay {
   var overlay = MACircle()
   var renderer: MACircleRenderer?
+  var zIndex: Int = 1
 
   @objc var radius = 0.0 { didSet { overlay.radius = radius } }
   @objc var strokeWidth = 1.0 { didSet { renderer?.lineWidth = strokeWidth } }
@@ -15,6 +16,10 @@ class Circle: UIView, Overlay {
 
   @objc func setCircleCenter(_ center: CLLocationCoordinate2D) {
     overlay.coordinate = center
+  }
+
+  @objc func setZIndex(_ zIndex: Int) {
+    self.zIndex = zIndex
   }
 
   func getOverlay() -> MABaseOverlay { overlay }

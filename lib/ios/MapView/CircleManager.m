@@ -7,5 +7,6 @@ RCT_EXPORT_VIEW_PROPERTY(radius, double)
 RCT_EXPORT_VIEW_PROPERTY(strokeWidth, double)
 RCT_EXPORT_VIEW_PROPERTY(strokeColor, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(fillColor, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(zIndex, NSNumber)
 
 @end

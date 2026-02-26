@@ -42,6 +42,16 @@ class MultiPoint: UIView, Overlay, MAMultiPointOverlayRendererDelegate {
   }
 
   func multiPointOverlayRenderer(_: MAMultiPointOverlayRenderer!, didItemTapped item: MAMultiPointItem!) {
-    onPress(["index": (overlay?.items.firstIndex(of: item))!])
+    guard let overlay = overlay else { return }
+    
+    // 通过坐标比较来查找索引，而不是使用对象比较
+    let tappedCoordinate = item.coordinate
+    for (index, overlayItem) in overlay.items.enumerated() {
+      if overlayItem.coordinate.latitude == tappedCoordinate.latitude &&
+         overlayItem.coordinate.longitude == tappedCoordinate.longitude {
+        onPress(["index": index])
+        return
+      }
+    }
   }
 }

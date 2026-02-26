@@ -120,7 +120,15 @@ class MapView: MAMapView, MAMapViewDelegate {
   override func didAddSubview(_ subview: UIView) {
     if let overlay = (subview as? Overlay)?.getOverlay() {
       overlayMap[overlay] = subview as? Overlay
-      add(overlay)
+      // 根据zIndex设置overlay层级
+      if let circle = subview as? Circle {
+        // zIndex < 0 使用 MAOverlayLevelAboveRoads（在道路和标注之下）
+        // zIndex >= 0 使用 MAOverlayLevelAboveLabels（在标注之上）
+        let level: MAOverlayLevel = circle.zIndex < 0 ? .aboveRoads : .aboveLabels
+        add(overlay, level: level)
+      } else {
+        add(overlay)
+      }
     }
     if let annotation = (subview as? Marker)?.annotation {
       markerMap[annotation] = subview as? Marker
